@@ -18,10 +18,15 @@ module.exports = async (req, res) => {
   // Vercel cron sends GET requests
   if (req.method !== 'GET') return json(res, 405, { error: 'Method not allowed' });
 
-  // Verify this is from Vercel cron (optional security)
-  const authHeader = req.headers['authorization'];
-  if (process.env.CRON_SECRET && authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-    return json(res, 401, { error: 'Unauthorized' });
+  // Verify request is from cron-job.org or authorized caller
+  const cronSecret = process.env.CRON_SECRET;
+  if (cronSecret) {
+    const url = new URL(req.url, `http://${req.headers.host}`);
+    const querySecret = url.searchParams.get('secret');
+    const authHeader = req.headers['authorization'];
+    if (querySecret !== cronSecret && authHeader !== `Bearer ${cronSecret}`) {
+      return json(res, 401, { error: 'Unauthorized' });
+    }
   }
 
   try {
