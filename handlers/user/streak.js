@@ -1,9 +1,7 @@
-const { verifyFirebaseToken, verifyApiKey, getUserByFirebaseUid, parseBody, json } = require('../../lib/middleware');
+const { verifyFirebaseToken, getUserByFirebaseUid, parseBody, json } = require('../../lib/middleware');
 const { query, transaction } = require('../../lib/db');
 
 module.exports = async (req, res) => {
-  const apiErr = verifyApiKey(req);
-  if (apiErr) return json(res, apiErr.status, { error: apiErr.error });
 
   const authErr = await verifyFirebaseToken(req);
   if (authErr) return json(res, authErr.status, { error: authErr.error });

@@ -1,4 +1,4 @@
-const { verifyFirebaseToken, verifyApiKey, json } = require('../../../lib/middleware');
+const { verifyFirebaseToken, json } = require('../../../lib/middleware');
 const { query } = require('../../../lib/db');
 
 const MOTIVATION_TYPES = [
@@ -34,8 +34,6 @@ const recentlyShown = {};
 module.exports = async (req, res) => {
   if (req.method !== 'GET') return json(res, 405, { error: 'Method not allowed' });
 
-  const apiErr = verifyApiKey(req);
-  if (apiErr) return json(res, apiErr.status, { error: apiErr.error });
 
   const authErr = await verifyFirebaseToken(req);
   if (authErr) return json(res, authErr.status, { error: authErr.error });
