@@ -7,7 +7,7 @@ module.exports = async (req, res) => {
   if (req.method !== 'POST') return json(res, 405, { error: 'Method not allowed' });
 
   const apiErr = verifyApiKey(req);
-  if (apiErr) return json(res, apiErr.status, { error: apiErr.error });
+  if (apiErr) return json(res, apiErr.status, apiErr);
 
   const body = await parseBody(req);
   const { email, password, firstName, lastName, dob, weightLbs, heightCm, gender,
