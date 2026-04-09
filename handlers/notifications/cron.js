@@ -1,4 +1,4 @@
-const { json } = require('../../lib/middleware');
+const { verifyApiKey, json } = require('../../lib/middleware');
 const { query } = require('../../lib/db');
 const { sendNotification } = require('../../lib/fcm');
 
@@ -17,6 +17,9 @@ const TIMEZONE_ABBREVIATION_MAP = {
 module.exports = async (req, res) => {
   // Vercel cron sends GET requests
   if (req.method !== 'GET') return json(res, 405, { error: 'Method not allowed' });
+
+  const apiErr = verifyApiKey(req);
+  if (apiErr) return json(res, apiErr.status, { error: apiErr.error });
 
   // Verify request is from cron-job.org or authorized caller
   const cronSecret = process.env.CRON_SECRET;
