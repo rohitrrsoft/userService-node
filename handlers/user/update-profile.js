@@ -53,8 +53,9 @@ module.exports = async (req, res) => {
 
     const fieldMap = {
       email: 'email', firstName: 'first_name', lastName: 'last_name',
-      gender: 'gender', weight: 'weight', weightUnit: 'weight_unit',
-      height: 'height', heightUnit: 'height_unit',
+      gender: 'gender',
+      weightLbs: 'weight', weight: 'weight', weightUnit: 'weight_unit',
+      heightCm: 'height', height: 'height', heightUnit: 'height_unit',
       exerciseFrequency: 'exercise_frequency', country: 'country',
       timezone: 'timezone', dob: 'dob', motivationType: 'motivation_type',
     };

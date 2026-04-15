@@ -32,5 +32,5 @@ module.exports = async (req, res) => {
     return r.rows[0].goal_amount_ml;
   });
 
-  return json(res, 201, result);
+  return json(res, 200, result);
 };
