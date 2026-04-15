@@ -12,8 +12,12 @@ module.exports = async (req, res) => {
   if (!user) return json(res, 404, { error: 'User not found' });
 
   const body = await parseBody(req);
-  const amountMl = body.amountMl;
+  const amountMl = body.waterConsumedMl ?? body.amountMl;
   const timestamp = body.timestamp || new Date().toISOString();
+
+  if (amountMl == null || isNaN(amountMl)) {
+    return json(res, 400, { error: 'amountMl or waterConsumedMl is required' });
+  }
 
   const result = await query(
     `INSERT INTO water_intake (user_id, intake_amount_ml, intake_timestamp, created_at, updated_at)
