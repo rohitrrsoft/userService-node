@@ -1,4 +1,4 @@
-const { verifyFirebaseToken, getUserByFirebaseUid, json } = require('../../lib/middleware');
+const { verifyFirebaseToken, getUserByFirebaseUid, json, toCamel } = require('../../lib/middleware');
 
 module.exports = async (req, res) => {
   if (req.method !== 'GET') return json(res, 405, { error: 'Method not allowed' });
@@ -10,5 +10,5 @@ module.exports = async (req, res) => {
   const user = await getUserByFirebaseUid(req.firebaseUid);
   if (!user) return json(res, 404, { error: 'User not found' });
 
-  return json(res, 200, user);
+  return json(res, 200, toCamel(user));
 };

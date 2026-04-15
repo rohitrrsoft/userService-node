@@ -1,4 +1,4 @@
-const { verifyFirebaseToken, getUserByFirebaseUid, json } = require('../../../lib/middleware');
+const { verifyFirebaseToken, getUserByFirebaseUid, json, toCamel } = require('../../../lib/middleware');
 const { query } = require('../../../lib/db');
 
 module.exports = async (req, res) => {
@@ -21,5 +21,5 @@ module.exports = async (req, res) => {
   const activeGoalMl = activeGoal ? activeGoal.goal_amount_ml : null;
   const hydrationGoal = activeGoalMl ? activeGoalMl / 1000.0 : null;
 
-  return json(res, 200, { user, activeGoalMl, hydrationGoal });
+  return json(res, 200, { user: toCamel(user), activeGoalMl, hydrationGoal });
 };

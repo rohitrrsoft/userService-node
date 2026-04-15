@@ -1,4 +1,4 @@
-const { verifyApiKey, parseBody, json } = require('../../lib/middleware');
+const { verifyApiKey, parseBody, json, toCamel } = require('../../lib/middleware');
 const { getAuth } = require('../../lib/firebase');
 const { transaction } = require('../../lib/db');
 const { calculateHydrationGoal } = require('../../lib/water-intake-util');
@@ -80,7 +80,7 @@ module.exports = async (req, res) => {
       // Generate custom token
       const sessionToken = await getAuth().createCustomToken(firebaseUser.uid);
 
-      return { sessionToken, hydrationGoal, user: savedUser };
+      return { sessionToken, hydrationGoal, user: toCamel(savedUser) };
     });
 
     return json(res, 201, result);

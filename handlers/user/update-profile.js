@@ -1,4 +1,4 @@
-const { verifyFirebaseToken, getUserByFirebaseUid, parseBody, json } = require('../../lib/middleware');
+const { verifyFirebaseToken, getUserByFirebaseUid, parseBody, json, toCamel } = require('../../lib/middleware');
 const { getAuth } = require('../../lib/firebase');
 const { query } = require('../../lib/db');
 
@@ -68,7 +68,7 @@ module.exports = async (req, res) => {
     }
 
     if (updates.length === 0) {
-      return json(res, 200, user);
+      return json(res, 200, toCamel(user));
     }
 
     updates.push(`updated_at = NOW()`);
@@ -79,7 +79,7 @@ module.exports = async (req, res) => {
       values
     );
 
-    return json(res, 200, result.rows[0]);
+    return json(res, 200, toCamel(result.rows[0]));
   } catch (e) {
     return json(res, 500, { error: e.message || 'Profile update failed' });
   }
